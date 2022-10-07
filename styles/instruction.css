@@ -1,0 +1,76 @@
+/*选项卡*/
+/*一般设置*/
+
+html {
+    font-family: sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.infobox{
+    width: 904px;
+    height: 400px;
+    margin: 20px auto 0;
+}
+/*样式化选项卡*/
+.infobox ul {
+    border: 1px solid #b60000;
+    overflow: hidden;
+    height: 100px;
+    margin: 1px;
+    padding: 0;
+}
+
+.infobox li {
+    float: left;
+    list-style-type: none;
+    width: 300px;
+}
+
+.infobox li a {
+    display: inline-block;
+    text-decoration: none;
+    width: 100%;
+    line-height: 100px;
+    background: white;
+    color: #b60000;
+    text-align: center;
+    font-weight: bold;
+}
+
+.infobox li a:focus, .infobox li a:hover {
+    background-color: #b60000;
+    color: white;
+}
+
+.infobox li a.active {
+    background-color: #b60000;
+    color: white;
+}
+/*样式化面板*/
+.infobox .panels {
+    height: 600px;
+    position: relative;
+    clear: both;
+}
+
+.infobox article {
+    background-color: #b60000;
+    color: white;
+    position: absolute;
+    padding: 10px 20px;
+    height: 600px;
+    top: 0;
+    left: 0;
+}
+
+.infobox .active-panel {
+    z-index: 1;
+}
+/*选项卡*/

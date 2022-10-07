@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="icon" href="images/ico/oojs.ico">
+        <title>面向对象js编程</title>
+    </head>
+
+    <body>
+        <p style="font-size: 32px;">本例要求您在浏览器的JavaScript控制台中输入命令（详见 <a href="https://developer.mozilla.org/en-US/docs/Learn/Common_questions/What_are_browser_developer_tools">什么是浏览器开发工具</a> 获得更多信息）</p>
+        <p style="font-size: 32px;">查看源代码理解面向对象的JavaScript编程</p>
+
+    </body>
+
+    <script>
+        //对象
+        var person={
+            name : {
+                first : 'Bob',//子对象
+                last : 'Smith'
+            },
+            age : 32,
+            gender : 'male',
+            interests : ['music', 'skiing'],
+            bio : function() {
+                alert(this.name.first + ' ' + this.name.last + ' is ' + this.age + ' years old. He likes ' + this.interests[0] + ' and ' + this.interests[1] + '.');
+            },//this 指向了代码所在的对象 (其实代码运行时所在的对象)
+            greeting: function() {
+                alert('Hi! I\'m ' + this.name.first + '.');
+            }
+        };
+
+        person.farewell = function() { alert("Bye " + person['age'] + " everybody!") };//[]表示理解为对象字符串数组
+
+        var myDataName = 'height';
+        var myDataValue = '1.75m';
+        person[myDataName] = myDataValue;//点表示法只能接受字面量的成员的名字，不接受变量作为名字，而括号表示法可以
+
+        //构造器函数
+        function Person(first, last, age, gender, interests) {
+            // 属性与方法定义
+            this.name = {
+            'first': first,
+            'last' : last
+            };
+            this.age = age;
+            this.gender = gender;
+            this.interests = interests;
+            this.bio = function() {
+            // 首先定义一个字符串，并使它等于我们知道的bio中永远相同的部分。
+            var string = this.name.first + ' ' + this.name.last + ' is ' + this.age + ' years old. ';
+            // 定义一个包含第二句中代词部分的变量
+            var pronoun;
+
+            // 检查gender的值，并在每种情况下设置合适的代词值
+            if(this.gender === 'male' || this.gender === 'Male' || this.gender === 'm' || this.gender === 'M') {
+                pronoun = 'He likes ';
+            } else if(this.gender === 'female' || this.gender === 'Female' || this.gender === 'f' || this.gender === 'F') {
+                pronoun = 'She likes ';
+            } else {
+                pronoun = 'They like ';
+            }
+
+            // 把代词串加到主串的末尾
+            string += pronoun;
+
+            // 根据兴趣的数量是1、2还是3，使用另一个条件句来组织第二句的最后一部分
+            if(this.interests.length === 1) {
+                string += this.interests[0] + '.';
+            } else if(this.interests.length === 2) {
+                string += this.interests[0] + ' and ' + this.interests[1] + '.';
+            } else {
+                // 如果有两个以上的兴趣爱好，我们将遍历它们，将每个兴趣爱好都添加到主字符串中，后面加一个逗号，除了最后一个兴趣爱好，它需要一个and &句号
+                for(var i = 0; i < this.interests.length; i++) {
+                if(i === this.interests.length - 1) {
+                    string += 'and ' + this.interests[i] + '.';
+                } else {
+                    string += this.interests[i] + ', ';
+                }
+                }
+            }
+
+            // 最后，在构建了字符串之后，我们警告()它
+            alert(string);
+            };
+            this.greeting = function() {
+            alert('Hi! I\'m ' + this.name.first + '.');
+            };
+        };
+        var person1 = new Person('Bob', 'Smith', 32, 'male', ['music', 'skiing']);//创建对象实例
+
+        Person.prototype.farewell = function() {
+            alert(this.name.first + ' has left the building. Bye for now!');
+        };
+    </script>
+</html>

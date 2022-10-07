@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>纯JS消除游戏</title>
+    <link rel="icon" href="images/ico/eliminate.ico">
+    <style>
+        canvas {
+            background: #eee;
+            position: fixed;
+            top: 4%;
+            left: 13%;
+        }
+    </style>
+</head>
+<body>
+<canvas id="myCanvas" width="1080" height="720"></canvas>
+<script>
+
+//画布
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+//计分
+var score = 0;
+
+//生命值
+var lives = 3;
+
+//球板
+var paddleHeight = 15;
+var paddleWidth = 100;
+var paddleX = (canvas.width-paddleWidth)/2; 
+
+//按键
+var rightPressed = false;
+var leftPressed = false;
+
+//球
+var x = canvas.width/2;
+var y = canvas.height-30;
+var ballRadius = 10;
+
+//移速
+var dx = 2;
+var dy = -2;
+
+var paddleDx = 5;
+
+//砖
+var brickRowCount = 10;
+var brickColumnCount = 10;
+var brickWidth = 75;
+var brickHeight = 20;
+var brickPadding = 15;
+var brickOffsetTop = 90;
+var brickOffsetLeft = 90;
+
+var bricks = [];
+for(c=0; c<brickColumnCount; c++) {
+    bricks[c] = [];
+    for(r=0; r<brickRowCount; r++) {
+        bricks[c][r] = { x: 0, y: 0, status: 1 };//状态码
+    }
+}
+
+//计分
+function drawScore() {
+    ctx.font = "25px Arial";
+    ctx.fillStyle = "#0aa344";
+    ctx.fillText("得分："+score, 20, 40);
+}
+
+//生命值
+function drawLives() {
+    ctx.font = "25px Arial";
+    ctx.fillStyle = "#f20c00";
+    ctx.fillText("生命值："+lives, canvas.width-130, 40);
+}
+
+//画球板
+function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+
+//画球
+function drawBall() {
+    ctx.beginPath();//在每一帧更新之前清空画布
+    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+
+//画砖
+function drawBricks() {
+    for(c=0; c<brickColumnCount; c++) {
+        for(r=0; r<brickRowCount; r++) {
+            if(bricks[c][r].status == 1) {
+                var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+                var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    }
+}
+
+//按键事件响应
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+function keyDownHandler(e) {
+    if(e.keyCode == 39||e.keyCode == 68) {
+        rightPressed = true;
+    }
+    else if(e.keyCode == 37||e.keyCode == 65) {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if(e.keyCode == 39||e.keyCode == 68) {
+        rightPressed = false;
+    }
+    else if(e.keyCode == 37||e.keyCode == 65) {
+        leftPressed = false;
+    }
+}
+
+//鼠标事件响应
+document.addEventListener("mousemove", mouseMoveHandler, false);
+
+function mouseMoveHandler(e) {
+    var relativeX = e.clientX - canvas.offsetLeft;
+    if(relativeX > (paddleWidth/2) && relativeX < (canvas.width-paddleWidth/2)) {
+        paddleX = relativeX - paddleWidth/2;
+    }
+}
+
+//球砖撞击侦测且计分函数
+function collisionDetection() {
+    for(var c=0; c<brickColumnCount; c++) {
+        for(var r=0; r<brickRowCount; r++) {
+            var b = bricks[c][r];
+            if(b.status == 1) {
+                if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
+                    dy = -dy;
+                    b.status = 0;
+                    score++;
+                    if(score == brickRowCount*brickColumnCount) {
+                        alert("恭喜！游戏胜利！");
+                        document.location.reload();
+                    }
+                }
+            }
+        }
+    }
+}
+
+//画全部 简单的四壁碰撞
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBricks();
+    drawBall();
+    drawPaddle();
+    drawScore();
+    drawLives();
+    collisionDetection();
+
+    //球移动
+    if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+        dx = -dx;
+        }
+    if(y + dy < ballRadius) {
+        dy = -dy;
+    }
+    else if(y + dy > canvas.height-ballRadius) {
+        if(x > paddleX && x < paddleX + paddleWidth) {
+            dy = -dy;
+        }
+        else {
+            lives--;
+            if(!lives) {
+                alert("游戏结束！");
+                document.location.reload();
+            }
+            else {
+                x = canvas.width/2;
+                y = canvas.height-30;
+                dx = 2;
+                dy = -2;
+                paddleX = (canvas.width-paddleWidth)/2;
+            }
+        }
+    }
+
+    //板移动
+    if(rightPressed && paddleX < canvas.width-paddleWidth) {
+        paddleX += paddleDx;
+    }
+    else if(leftPressed && paddleX > 0) {
+        paddleX -= paddleDx;
+    }
+
+    x += dx;
+    y += dy;
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+
+</script>
+</body>
+</html>

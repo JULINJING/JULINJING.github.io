@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欢迎页</title>
+    <link rel="icon" href="images/ico/welcome.ico">
+    <link rel="stylesheet" href="styles/index.css" type="text/css">
+    <script src="scripts/index.js" defer></script><!--在页面加载完成之前，<script>元素的内容不会执行-->
+</head>
+<body>
+    <header>
+    <h1></h1>
+
+    <form>
+        <div class="remember">
+        <label for="entername">✍请输入您的姓名：</label>
+        <input id="entername" type="text" required autofocus='autofocus' maxlength="20">
+        <input id="submitname" type="submit" value="提交">
+        </div>
+        <div class="forget">
+        <label for="forgetname">💔希望让我将您遗忘吗？</label>
+        <input id="forgetname" type="reset" value="遗忘">
+        </div>
+    </form>
+    </header>
+
+    <main>
+    <p class="personal-greeting">欢迎访问我的网站。</p>
+
+    <p>这里是Zitao Huang的网站的欢迎页面，在这里，您将开启一个有趣网站的体验之旅，感谢您的访问！</p>
+    <br/>
+
+    <div class="wait">
+        <p>右上角<strong style="color: #395260;">填写姓名后</strong>可访问我的网站主页</p>
+        <img src="images/spinner.gif" alt="等待" title="等待" width="100" height="100">
+    </div>
+    <div class="enter">
+        <p>请点击<strong style="color: #395260;">下方图标</strong>进入我的网站主页</p>
+        <a href="home.html"><img src="images/homepage.png" alt="点击图片链接进入我的网站主页" title="点击图标进入我的网站主页"></a>
+    </div>
+
+    </main>
+
+    <footer>
+    <p>请随心所欲地使用这些开源网页代码。</p>
+    </footer>
+</body>
+</html>

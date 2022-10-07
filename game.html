@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>简易的数谜游戏</title>
+    <link rel="icon" href="images/ico/game.ico">
+    <link rel="stylesheet" href="styles/game.css" type="text/css">
+    <script src="scripts/game.js" async></script><!--异步 但脚本调用顺序不定-->
+    <!--如果脚本无需等待页面解析，且无依赖独立运行，那么应使用 async。
+    如果脚本需要等待页面解析，且依赖于其它脚本，调用这些脚本时应使用 defer，将关联的脚本按所需顺序置于 HTML 中。-->
+</head>
+
+<body>
+    <button>随机改变背景色</button>
+
+    <h1>数字猜谜游戏</h1>
+
+    <p>我们选择了1到100之间的随机数。看看你能不能在10轮或更少的时间内猜出来。我们会告诉你你的猜测是太高还是太低。</p>
+
+    <div class="form"><!--设置表单-->
+    <label for="guessField">输入你的猜测：</label>
+    <input type="number" min="1" max="100" required id="guessField" class="guessField">
+    <input type="submit" value="提交猜测值" class="guessSubmit">
+    </div>
+
+    <div class="resultParas">
+    <p class="guesses"></p>
+    <p class="lastResult"></p>
+    <p class="lowOrHi"></p>
+    </div>
+</body>
+</html>
