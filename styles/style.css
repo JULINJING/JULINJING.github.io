@@ -418,6 +418,11 @@ video{
     text-align: center;
 }
 
+video:hover,
+.videoiframe:hover{
+    cursor: pointer;
+}
+
 /*文章*/
 .pbbox.b{
     font-size: 3rem;
